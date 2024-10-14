@@ -13,7 +13,7 @@ export default function Dashboard() {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
-        setWorkData(data.data); // Assuming your response structure is { data: [...] }
+        setWorkData(data.data); 
       } catch (error) {
         console.error("Error fetching work data:", error);
       } finally {

@@ -13,7 +13,7 @@ export default function Dashboard() {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
-        setWorkData(data.data); // Assuming your response structure is { data: [...] }
+        setWorkData(data.data); 
       } catch (error) {
         console.error("Error fetching work data:", error);
       } finally {
@@ -32,7 +32,7 @@ export default function Dashboard() {
         if (!response.ok) {
           throw new Error('Failed to delete the entry');
         }
-        // Update the workData state to remove the deleted entry
+        
         setWorkData(workData.filter(item => item._id !== id));
       } catch (error) {
         console.error("Error deleting entry:", error);
@@ -51,31 +51,20 @@ export default function Dashboard() {
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
             <tr className="bg-gray-200">
-              <th className="py-2 px-4 border-b">Title</th>
-              <th className="py-2 px-4 border-b">Employment Type</th>
-              <th className="py-2 px-4 border-b">Company Name</th>
-              <th className="py-2 px-4 border-b">Location</th>
-              <th className="py-2 px-4 border-b">Start Date</th>
-              <th className="py-2 px-4 border-b">End Date</th>
-              <th className="py-2 px-4 border-b">Actions</th>
+              <th className="py-2 px-4 border-b">name</th>
+              <th className="py-2 px-4 border-b">email</th>
+              <th className="py-2 px-4 border-b">Subject</th>
+              <th className="py-2 px-4 border-b">message</th>
             </tr>
           </thead>
           <tbody>
             {workData.map((item) => (
               <tr key={item._id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 border-b">{item.title}</td>
-                <td className="py-2 px-4 border-b">{item.employeType}</td>
-                <td className="py-2 px-4 border-b">{item.companyName}</td>
-                <td className="py-2 px-4 border-b">{item.location}</td>
-                <td className="py-2 px-4 border-b">{item.startDate}</td>
-                <td className="py-2 px-4 border-b">{item.endDate}</td>
+                <td className="py-2 px-4 border-b">{item.name}</td>
+                <td className="py-2 px-4 border-b">{item.email}</td>
+                <td className="py-2 px-4 border-b">{item.subject}</td>
+                <td className="py-2 px-4 border-b">{item.message}</td>
                 <td className="py-2 px-4 border-b">
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    Delete
-                  </button>
                 </td>
               </tr>
             ))}
