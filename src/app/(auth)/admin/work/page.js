@@ -115,7 +115,7 @@ export default function AdminWork() {
               type="date" 
               className="w-full border my-input-text"/>
         </div>
-
+              
         <button 
           onClick={onSubmitData}
           className="mx-1 h-9 items-center justify-center px-4  rounded-md bg-amber-500">
