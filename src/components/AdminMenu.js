@@ -18,6 +18,9 @@ export default function AdminMenu() {
                 </div>
                 <div>
                   <ul className="flex flex-row gap-6">
+                  <li className="mt-1">
+                      <a className="btn-link" href="/admin/blogs">Blogs</a>
+                    </li>
                     <li className="mt-1">
                       <a className="btn-link" href="/admin/work">Work</a>
                     </li>
