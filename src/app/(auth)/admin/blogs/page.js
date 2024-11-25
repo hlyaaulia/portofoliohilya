@@ -1,16 +1,36 @@
-'use client'
-import Card from '../../../../components/card';
+'use client';
 import { useRouter } from 'next/navigation';
+import Card from "../../../../components/card";
+import ConfigDialog from "../../../../components/ConfirmDialog";
+import { useState } from 'react';
 export default function AdminBlogs() {
-    const router = useRouter();
-
-    const onAddNew=()=>{
+    const router = useRouter()
+    const [modal, setModal] = useState(false)
+    const [modalTitle, setModalTitle] = useState("")
+    const [modalMessage, setModalMessage] = useState("")
+    const [blogs, setblogs] = useState([])
+    const onAddNew = () =>{
         router.push('/admin/blogs/form')
+    }
+    const fetchData = async()=>{
+        try{
+            const res= await fetch('/api/blogs');
+            let responsetData = await res.json()
+            setblogs(responsetData)
+        }catch(err)
+        {
+            console.error("ERR" , err.message)
+            setModal(true)
+            setModalTitle('Err')
+            setModalMessage(err.message)
+        }
     }
     return (
       <>
-        <Card title="List of Message" style="mt-6" showAddbtn onAddnew={onAddNew}>
-        <button className="bg-red-300 hover:bg-red-400 text-gray-800 py-2 px-4 rounded-r">
+        <Card title="List of Message" style="mt-6">
+        <button 
+        onClick={onAddNew}
+        className="bg-red-300 hover:bg-red-400 text-gray-800 py-2 px-4 rounded-r">
                                    Addnew
                                 </button>
         <table className="table-auto">
@@ -32,8 +52,9 @@ export default function AdminBlogs() {
                         <td className='p-2 '>
                             <div className="inline-flex text-[12px]">
                                 <button className=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
-                                    Detail
+                                    Detail 
                                 </button>
+                                
                                 <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4">
                                     Edit
                                 </button>
