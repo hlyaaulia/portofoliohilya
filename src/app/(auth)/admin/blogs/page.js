@@ -10,9 +10,42 @@ export default function AdminBlogs() {
     const [modalTitle, setModalTitle] = useState("")
     const [modalMessage, setModalMessage] = useState("")
     const [blogs, setBologs] = useState([])
+    const [isOkOnly, setIsOkOnly] = useState(true)
+    const [deleteId, setDeleteId] = useState(null)
 
     const onAddNew = ()=>{
         router.push('/admin/blogs/form')
+    }
+
+    const onConfirmDelete=(id)=>{
+        setDeleteId(id)
+        setIsOkOnly(false)
+        setModalTitle('Confirm')
+        setModalMessage('Apakah and yakin ingin menghapus data ini?')
+        setModal(true)
+    }
+
+    const onCancel=()=>{
+        setModal(false)
+    }
+
+    const onConfirmOk=async ()=>{
+        try{
+            const res = await fetch(`/api/blogs/${deleteId}`,{method:'DELETE'});
+            let responseData = await res.json()
+
+            setIsOkOnly(true)
+            setModalTitle('Info')
+            setModalMessage(responseData.message)
+            setModal(true)
+            fetchData()
+        }catch(err){
+            console.error("ERR", err.message)
+            setModal(true)
+            setModalTitle('Err')
+            setModalMessage(err.message)
+        }
+
     }
 
     const fetchData = async ()=>{
@@ -27,6 +60,10 @@ export default function AdminBlogs() {
             setModalTitle('Err')
             setModalMessage(err.message)
         }
+    }
+
+    const gotoEditPage=(id)=>{
+        router.push(`/admin/blogs/${id}`)
     }
 
     useEffect(()=>{
@@ -49,7 +86,7 @@ export default function AdminBlogs() {
                     { blogs.map((item, key)=>{
                         return (
                             <tr key={key} className='border-b border-blue-gray-50 '>
-                                <td className='p-2 '>{key+1}</td>
+                                <td className='p-2 text-center'>{key+1}</td>
                                 <td className='p-2 '>{item.title} </td>
                                 <td className='p-2 '>{item.subTitle} </td>
                                 <td className='p-2 '>
@@ -57,10 +94,14 @@ export default function AdminBlogs() {
                                         <button className=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
                                             Detail
                                         </button>
-                                        <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4">
+                                        <button 
+                                            onClick={()=>gotoEditPage(item._id)}
+                                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4">
                                             Edit
                                         </button>
-                                        <button className="bg-red-300 hover:bg-red-400 text-gray-800 py-2 px-4 rounded-r">
+                                        <button 
+                                            onClick={()=>onConfirmDelete(item._id)}
+                                            className="bg-red-300 hover:bg-red-400 text-gray-800 py-2 px-4 rounded-r">
                                             Delete
                                         </button>
                                     </div>
@@ -79,8 +120,8 @@ export default function AdminBlogs() {
             title={modalTitle}
             message={modalMessage}
             onCancel={()=>onCancel()} 
-            onOk={()=>onCancel()} 
-            isOkOnly={true} />
+            onOk={()=>onConfirmOk()} 
+            isOkOnly={isOkOnly} />
       </>
     );
 }
