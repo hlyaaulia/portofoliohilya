@@ -100,7 +100,7 @@ export default function Blogsbyid() {
                         type="text" 
                         className="w-full border my-input-text"/>
             </div>
-
+            
             <div className="w-full my-2">
                 <label>komentar</label>
                     <input 
