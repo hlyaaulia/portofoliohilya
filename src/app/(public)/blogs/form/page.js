@@ -8,8 +8,8 @@ import { Editor } from '@tinymce/tinymce-react';
 export default function AdminBlogsForm() {
     const editorRef = useRef(null);
     const [modal, setModal] = useState(false)
-    const [modalTitle, setModalTitle] = useState("")
-    const [modalMessage, setModalMessage] = useState("")
+    const [modalnama, setModalnama] = useState("")
+    const [modalkomentar, setModalkomentar] = useState("")
     const [data, setData] = useState({
         nama:'',
         komentar:'',
@@ -28,8 +28,8 @@ export default function AdminBlogsForm() {
 
     const onCancel=()=>{
         setModal(false)
-        setModalTitle('')
-        setModalMessage('')
+        setmodalnama('')
+        setModalkomentar('')
         clearData()
     }
 
@@ -49,14 +49,14 @@ export default function AdminBlogsForm() {
                 throw Error(resData.message)
                 }
                 setModal(true)
-                setModalTitle('Info')
-                setModalMessage(resData.message)
+                setModalnama('Info')
+                setModalkomentar(resData.message)
             }
         }catch(err){
           console.error("ERR", err.message)
           setModal(true)
-          setModalTitle('Err')
-          setModalMessage(err.message)
+          setModalnama('Err')
+          setModalkomentar(err.message)
         }
       }
 
@@ -77,7 +77,7 @@ export default function AdminBlogsForm() {
             <div className="w-full my-2">
                 <label>komentar</label>
                     <input 
-                        name='subTitle'
+                        name='komentar'
                         value={data.komentar}
                         onChange={inputHandler}
                         className="w-full border my-input-text"/>
