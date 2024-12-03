@@ -1,41 +1,19 @@
 'use client'
-import Card from '../../../../components/card';
-import { useState, useEffect } from 'react'
+import Card from '../../../../../components/card';
+import ConfigDialog from '../../../../../components/ConfirmDialog'
+import { useState } from 'react'
 import { useRef } from 'react';
-import { useParams } from 'next/navigation'
+import { Editor } from '@tinymce/tinymce-react';
 
 export default function AdminBlogsForm() {
-    const params = useParams();
-    // const [data, setData] = useState(null)
-    const [isLoading, setLoading] = useState(true)
-
     const editorRef = useRef(null);
     const [modal, setModal] = useState(false)
-    const [modalnama, setModalnama] = useState("")
-    const [modalkomentar, setModalkomentar] = useState("")
+    const [modalTitle, setModalTitle] = useState("")
+    const [modalMessage, setModalMessage] = useState("")
     const [data, setData] = useState({
         nama:'',
         komentar:'',
     });
-
-    const onFetchBlogs=async()=>{
-        try{
-            setLoading(true)
-            let res = await fetch(`/api/blogs/${params.id}`)
-            let data = await res.json()
-            setData(data.data)
-            setLoading(false)
-        }catch(err){
-            console.log('err', err)
-            setData(null)
-            setLoading(false)
-        }
-    }
-    useEffect(()=>{
-        onFetchBlogs()
-    },[])
-
-    if(isLoading) return (<>Loading...</>)
 
     const clearData = ()=>{
         setData({
@@ -50,8 +28,8 @@ export default function AdminBlogsForm() {
 
     const onCancel=()=>{
         setModal(false)
-        setModalnama('')
-        setModalkomentar('')
+        setModalTitle('')
+        setModalMessage('')
         clearData()
     }
 
@@ -71,24 +49,19 @@ export default function AdminBlogsForm() {
                 throw Error(resData.message)
                 }
                 setModal(true)
-                setModalnama('Info')
-                setModalkomentar(resData.message)
+                setModalTitle('Info')
+                setModalMessage(resData.message)
             }
         }catch(err){
           console.error("ERR", err.message)
           setModal(true)
-          setModalnama('Err')
-          setModalkomentar(err.message)
+          setModalTitle('Err')
+          setModalMessage(err.message)
         }
       }
 
     return (
     <>
-  
-            <div className='margin-0 mx-auto w-2/3'>
-                <h2 className="text-center text-[32px] font-bold w-full">{data.title}</h2>
-                <div className='mt-10  ' dangerouslySetInnerHTML={{ __html: data.content }}/>
-            </div>
 
         <Card title="Blogs Form">
             <div className="w-full my-2">
@@ -104,7 +77,7 @@ export default function AdminBlogsForm() {
             <div className="w-full my-2">
                 <label>komentar</label>
                     <input 
-                        name='komentar'
+                        name='subTitle'
                         value={data.komentar}
                         onChange={inputHandler}
                         className="w-full border my-input-text"/>
@@ -118,14 +91,14 @@ export default function AdminBlogsForm() {
             </button>
         </Card>
 
-        {/* <ConfigDiaglog
+        <ConfigDialog  
             onOkOny={()=>onCancel()} 
             showDialog={modal}
             nama={modalnama}
             komentar={modalkomentar}
             onCancel={()=>onCancel()} 
             onOk={()=>onCancel()} 
-            isOkOnly={true} /> */}
+            isOkOnly={true} />
     </>
     )
 }
