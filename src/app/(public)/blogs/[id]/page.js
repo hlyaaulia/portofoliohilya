@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRef } from 'react';
 import { useParams } from 'next/navigation'
 
-export default function AdminBlogsForm() {
+export default function Blogsbyid() {
     const params = useParams();
     // const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(true)
