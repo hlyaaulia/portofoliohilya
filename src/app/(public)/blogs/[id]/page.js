@@ -56,7 +56,7 @@ export default function Blogsbyid(){
     const onFetchKomentar=async()=>{
         try{
             setLoadingKomentar(true)
-            let res = await fetch(`/api/komenblog/${params.id}`)
+            let res = await fetch(`/api/komentar/${params.id}`)
             let data = await res.json()
             setDataKomentar(data.data)
             setLoadingKomentar(false)
@@ -82,7 +82,7 @@ export default function Blogsbyid(){
                 const body = datakomen
                 body.komentar = editorRef.current.getContent();
 
-                let res = await fetch('/api/komenblog', {
+                let res = await fetch('/api/komentar', {
                     method:'POST',
                     body: JSON.stringify(body),
                 })
