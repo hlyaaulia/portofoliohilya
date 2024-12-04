@@ -26,15 +26,15 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     throw new Error('komentar is required')
                 }
 
-                let komentar = await db.collection("komentar").insertOne(body);
-                res.status(200).json({ data: komentar, message:'data berhasil di simpan' });
+                let komenblog = await db.collection("komenblog").insertOne(body);
+                res.status(200).json({ data: komenblog, message:'data berhasil di simpan' });
 
             }catch(err){
                 res.status(422).json({ message: err.message});
             }
             break;
         default:
-            const blogsDataKomen = await db.collection("komentar").find({}).toArray();
+            const blogsDataKomen = await db.collection("komenblog").find({}).toArray();
             res.json({ data: blogsDataKomen });
         break;
     }

@@ -9,9 +9,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     switch (req.method) {  
         case "GET":
             try{
-                const komentar = await db.collection("komentar")
+                const komenblog = await db.collection("komenblog")
                     .find({ blogId: idParam }).toArray();
-                res.json({ data: komentar });
+                res.json({ data: komenblog });
             }catch(err){
                 res.status(422).json({ message: err.message});
             }

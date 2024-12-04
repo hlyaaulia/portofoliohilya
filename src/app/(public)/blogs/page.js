@@ -8,7 +8,7 @@ const CardItem = ({ title, subTitle})=>{
             <div className="flex justify-center">
                 <img 
                     className="h-[300px]"
-                    src="/images/BLOGS.jpg"/>
+                    src="/images/no-image-icon.jpg"/>
             </div>
             <div className="p-4 bg-white h-[174px]">
                 <div className="text-[18px]">{title}</div>
