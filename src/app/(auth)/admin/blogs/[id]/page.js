@@ -18,21 +18,21 @@ export default function EditBlogs() {
         subTitle: '',
         content: '',
         _id: '',
-        categoryblogs: ''
+        kategori:'',
     });
-    const categoryblogs = [
-        {label:'Full Time', value:'full-time'},
-        {label:'Part Time', value:'part-time'},
-        {label:'Contract', value:'contract'},
-        {label:'Internship', value:'internship'}
+    const kategori = [
+        {label:'React Js', value:'React Js'},
+        {label:'React Native', value:'React Native'},
+        {label:'Vlue.js', value:'Vlue.js'},
+        {label:'Web Pemograman', value:'Web Pemograman'},
       ]
-    const [categories, setCategories] = useState([]); // State for category options
+    // const [categories, setCategories] = useState([]); // State for category options
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch('/api/categories'); // Assume endpoint for fetching categories exists
+            const res = await fetch('/api/blogs'); // Assume endpoint for fetching categories exists
             const categoryData = await res.json();
-            setCategories(categoryData.data || []);
+            // setCategories(categoryData.data || []);
         } catch (err) {
             console.error("Error fetching categories:", err.message);
         }
@@ -123,20 +123,20 @@ export default function EditBlogs() {
                 </div>
 
                 <div className="w-full my-2">
-                    <label>Category</label>
-                    <select
-                        name='categoryblogs'
-                        value={data.categoryblogs}
-                        onChange={inputHandler}
-                        className="w-full border my-input-text">
-                        <option value="">Select Category</option>
-                        {categories.map((category) => (
-                            <option key={category._id} value={category.name}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            <label>kategori</label>
+            <select  
+            name='kategori' 
+            value={data.kategori}  // Tambahkan value untuk menampilkan data yang dipilih
+            onChange={inputHandler}
+            className="w-full border my-input-text">
+            {
+            kategori.map((item, key) => 
+            <option key={key} value={item.value}>{item.label}</option>
+            )
+            }
+            </select>
+
+        </div>
 
                 <Editor
                     id='content'

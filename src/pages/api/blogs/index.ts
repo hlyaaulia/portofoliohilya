@@ -21,6 +21,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 if( body.subTitle == ""){
                     throw new Error('subTitle is required')
                 }
+                if( body.categoryblogs == ""){
+                    throw new Error('categoryblogs is required')
+                }
 
                 if( body.content == ""){
                     throw new Error('content is required')

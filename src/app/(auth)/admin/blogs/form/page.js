@@ -14,7 +14,7 @@ export default function AdminBlogsForm() {
         title:'',
         subTitle:'',
         content:'',
-        categoryblogs:'',
+        kategori:'',
     });
 
     const clearData = ()=>{
@@ -22,14 +22,14 @@ export default function AdminBlogsForm() {
             title:'',
             subTitle:'',
             content:'',
-            categoryblogs:'',
+            kategori:'',
         })
     }
-    const categoryblogs = [
-        {label:'Full Time', value:'full-time'},
-        {label:'Part Time', value:'part-time'},
-        {label:'Contract', value:'contract'},
-        {label:'Internship', value:'internship'}
+    const kategori = [
+        {label:'React Js', value:'React Js'},
+        {label:'React Native', value:'React Native'},
+        {label:'Vlue.js', value:'Vlue.js'},
+        {label:'Web Pemograman', value:'Web Pemograman'},
       ]
     const inputHandler= (e) =>{
         setData({...data, [e.target.name]: e.target.value })
@@ -92,18 +92,18 @@ export default function AdminBlogsForm() {
                         className="w-full border my-input-text"/>
             </div>
             <div className="w-full my-2">
-            <label>categoryblogs</label>
+            <label>kategori</label>
             <select  
-            name='categoryblogs' 
-            value={data.categoryblogs}  // Tambahkan value untuk menampilkan data yang dipilih
+            name='kategori' 
+            value={data.kategori}  // Tambahkan value untuk menampilkan data yang dipilih
             onChange={inputHandler}
             className="w-full border my-input-text">
             {
-            categoryblogs.map((item, key) => 
+            kategori.map((item, key) => 
             <option key={key} value={item.value}>{item.label}</option>
             )
             }
-            </select>
+</select>
 
         </div>
             <div className="w-full my-2">
