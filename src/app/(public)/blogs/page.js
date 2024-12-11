@@ -88,6 +88,7 @@ export default function Blogs() {
         Velit officia consequat duis enim velit mollit. lorem ipsum
       </p>
       <h1 className="text-2xl font-bold mb-4">Search Filter Example</h1>
+      <div className="flex justify-center" >
 
       <form
         onSubmit={handleSearchSubmit}
@@ -107,7 +108,7 @@ export default function Blogs() {
           Submit
         </button>
       </form>
-
+      </div>
       <div className="grid grid-cols-3 gap-4 mt-10">
         {isLoading && (
           <>

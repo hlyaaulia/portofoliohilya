@@ -2,142 +2,178 @@
 import { useRouter, useParams } from 'next/navigation';
 import Card from '../../../../../components/card';
 import { useEffect, useState, useRef } from 'react';
-import ConfigDialog from '../../../../../components/ConfirmDialog'
+import ConfigDialog from '../../../../../components/ConfirmDialog';
 import { Editor } from '@tinymce/tinymce-react';
 
 export default function EditBlogs() {
-    const router= useRouter()
+    const router = useRouter();
     const editorRef = useRef(null);
-    const params = useParams()
-    const [modal, setModal] = useState(false)
-    const [modalTitle, setModalTitle] = useState("")
-    const [modalMessage, setModalMessage] = useState("")
-    const [isOkOnly, setIsOkOnly] = useState(true)
+    const params = useParams();
+    const [modal, setModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalMessage, setModalMessage] = useState("");
+    const [isOkOnly, setIsOkOnly] = useState(true);
     const [data, setData] = useState({
-        title:'',
-        subTitle:'',
-        content:'',
-        _id:''
+        title: '',
+        subTitle: '',
+        content: '',
+        _id: '',
+        categoryblogs: ''
     });
+    const categoryblogs = [
+        {label:'Full Time', value:'full-time'},
+        {label:'Part Time', value:'part-time'},
+        {label:'Contract', value:'contract'},
+        {label:'Internship', value:'internship'}
+      ]
+    const [categories, setCategories] = useState([]); // State for category options
 
-
-    const fetDataById = async ()=>{
-        try{
-            const res = await fetch(`/api/blogs/${params.id}`);
-            let responseData = await res.json()
-            setData(responseData.data)
-
-        }catch(err){
-            console.error("ERR", err.message)
-            setModal(true)
-            setModalTitle('Err')
-            setModalMessage(err.message)
+    const fetchCategories = async () => {
+        try {
+            const res = await fetch('/api/categories'); // Assume endpoint for fetching categories exists
+            const categoryData = await res.json();
+            setCategories(categoryData.data || []);
+        } catch (err) {
+            console.error("Error fetching categories:", err.message);
         }
-    }
+    };
 
-    const onCancel=()=>{
-        setModal(false)
-    }
+    const fetchDataById = async () => {
+        try {
+            const res = await fetch(`/api/blogs/${params.id}`);
+            let responseData = await res.json();
+            setData(responseData.data);
+        } catch (err) {
+            console.error("ERR", err.message);
+            setModal(true);
+            setModalTitle('Error');
+            setModalMessage(err.message);
+        }
+    };
 
-    const onOkOnly=()=>{
-        setModal(false)
-        router.push('/admin/blogs')
-    }
+    const onCancel = () => {
+        setModal(false);
+    };
 
-    const inputHandler= (e) =>{
-        setData({...data, [e.target.name]: e.target.value })
-    }
+    const onOkOnly = () => {
+        setModal(false);
+        router.push('/admin/blogs');
+    };
 
-    const onSubmitData=async ()=>{
-        try{
+    const inputHandler = (e) => {
+        setData({ ...data, [e.target.name]: e.target.value });
+    };
+
+    const onSubmitData = async () => {
+        try {
             if (editorRef.current) {
-                const body = data
+                const body = { ...data };
                 body.content = editorRef.current.getContent();
 
                 let res = await fetch(`/api/blogs/${data._id}`, {
-                    method:'PUT',
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify(body),
-                })
+                });
 
-                let resData = await res.json()
-                if(!resData.data){
-                throw Error(resData.message)
+                let resData = await res.json();
+                if (!res.ok) {
+                    throw new Error(resData.message);
                 }
-                setModal(true)
-                setModalTitle('Info')
-                setModalMessage(resData.message)
-            }
-        }catch(err){
-          console.error("ERR", err.message)
-          setModal(true)
-          setModalTitle('Err')
-          setModalMessage(err.message)
-        }
-    }
 
-    useEffect(()=>{
-        fetDataById()
-    },[])
+                setModal(true);
+                setModalTitle('Info');
+                setModalMessage(resData.message);
+            }
+        } catch (err) {
+            console.error("ERR", err.message);
+            setModal(true);
+            setModalTitle('Error');
+            setModalMessage(err.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchDataById();
+        fetchCategories();
+    }, []);
 
     return (
-      <>
-        <Card title="Blogs Edit Form">
-            <div className="w-full my-2">
-                <label>Title</label>
-                    <input 
+        <>
+            <Card title="Blogs Edit Form">
+                <div className="w-full my-2">
+                    <label>Title</label>
+                    <input
                         name='title'
                         value={data.title}
                         onChange={inputHandler}
-                        type="text" 
-                        className="w-full border my-input-text"/>
-            </div>
+                        type="text"
+                        className="w-full border my-input-text" />
+                </div>
 
-            <div className="w-full my-2">
-                <label>Sub Title</label>
-                    <input 
+                <div className="w-full my-2">
+                    <label>Sub Title</label>
+                    <input
                         name='subTitle'
                         value={data.subTitle}
                         onChange={inputHandler}
-                        className="w-full border my-input-text"/>
-            </div>
+                        className="w-full border my-input-text" />
+                </div>
 
-            <Editor
+                <div className="w-full my-2">
+                    <label>Category</label>
+                    <select
+                        name='categoryblogs'
+                        value={data.categoryblogs}
+                        onChange={inputHandler}
+                        className="w-full border my-input-text">
+                        <option value="">Select Category</option>
+                        {categories.map((category) => (
+                            <option key={category._id} value={category.name}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <Editor
                     id='content'
                     apiKey='hz9os6h0p1826jcqknks4q1fm8yl9khctaa7nmexkf0rnx2e'
                     onInit={(_evt, editor) => editorRef.current = editor}
                     initialValue={data.content}
                     init={{
-                    height: 500,
-                    menubar: false,
-                    plugins: [
-                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                    ],
-                    toolbar: 'undo redo | blocks | ' +
-                        'bold italic forecolor | alignleft aligncenter ' +
-                        'alignright alignjustify | bullist numlist outdent indent | ' +
-                        'removeformat | help',
-                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        height: 500,
+                        menubar: false,
+                        plugins: [
+                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | ' +
+                            'bold italic forecolor | alignleft aligncenter ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                            'removeformat | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                     }}
                 />
 
-            <button  className="btn-primary" onClick={onSubmitData}>
-                <span className="relative text-sm font-semibold text-white">
-                    Save Data
-                </span>
-            </button> 
-        </Card>
+                <button className="btn-primary" onClick={onSubmitData}>
+                    <span className="relative text-sm font-semibold text-white">
+                        Save Data
+                    </span>
+                </button>
+            </Card>
 
-        <ConfigDialog  
-            onOkOny={()=>onOkOnly()} 
-            showDialog={modal}
-            title={modalTitle}
-            message={modalMessage}
-            onCancel={()=>onCancel()} 
-            onOk={()=>onConfirmOk()} 
-            isOkOnly={isOkOnly} />
-      </>
+            <ConfigDialog
+                onOkOny={() => onOkOnly()}
+                showDialog={modal}
+                title={modalTitle}
+                message={modalMessage}
+                onCancel={() => onCancel()}
+                onOk={() => { }}
+                isOkOnly={isOkOnly} />
+        </>
     );
 }
-  
