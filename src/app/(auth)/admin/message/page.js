@@ -22,7 +22,7 @@ export default function AdminMessage() {
                         <td className='p-2 '>Jhon doe</td>
                         <td className='p-2 '>jhondoe@mail.com</td>
                         <td className='p-2 '>Loremipsum</td>
-                        <td className='p-2 '>loremipsum loremipsum loremipsum</td>
+                        <td className='p-2 '> ppp loremipsum loremipsum loremipsum</td>
                         <td className='p-2 '>
                             <div class="inline-flex text-[12px]">
                                 <button class=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
