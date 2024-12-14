@@ -20,7 +20,7 @@
     "next": "^14.2.16",
     "react": "^18",
     "react-dom": "^18",
-    "tinymce": "^7.5.1"
+    "tinymce": "^7.6.0"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
