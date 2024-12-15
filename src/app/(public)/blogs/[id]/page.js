@@ -143,7 +143,7 @@ export default function Blogsbyid(){
                 <label>Komentar</label>
                 <Editor
                     id='komentar'
-                    apiKey='hz9os6h0p1826jcqknks4q1fm8yl9khctaa7nmexkf0rnx2e'
+                    apiKey='9cwimxs87anry0u2avnf1wswmlg849552261vhxbl2qb8qkw'
                     onInit={(_evt, editor) => editorRef.current = editor}
                     initialValue={datakomen.komentar}
                     init={{
