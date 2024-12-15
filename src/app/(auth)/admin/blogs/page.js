@@ -72,7 +72,7 @@ export default function AdminBlogs() {
 
         // Filter berdasarkan judul blog
         const results = blogs.filter((item) =>
-            item.title.toLowerCase().includes(searchTerm.toLowerCase())
+            item.kategori.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredBlogs(results); // Update filteredBlogs dengan hasil pencarian
     };
@@ -84,7 +84,7 @@ export default function AdminBlogs() {
     return (
         <>
             <Card title="List of Blogs" style="mt-5" showAddBtn onAddNew={onAddNew}>
-                <h1 className="text-2xl font-bold mb-4">Search Filter Example</h1>
+            <h1 className="text-2xl text-center font-bold mb-4">Search Kategori Blogs</h1>
                 <div className="flex justify-center" >
                 <form
                     onSubmit={handleSearchSubmit}
@@ -92,7 +92,7 @@ export default function AdminBlogs() {
                 >
                     <input
                         type="text"
-                        placeholder="Cari berdasarkan judul..."
+                        placeholder="Cari berdasarkan category"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="flex-1 p-2 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring focus:ring-indigo-300"
@@ -125,14 +125,11 @@ export default function AdminBlogs() {
                                     <td className='p-2 text-center'>{item.kategori} </td>
                                     <td className='p-2 text-center'>
                                         <div className="inline-flex text-[12px]">
-                                            <button className=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
-                                                Detail
-                                            </button>
                                             <button
                                                 onClick={() => gotoEditPage(item._id)}
                                                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4">
-                                                Edit
-                                            </button>
+                                                Edit 
+                                            </button> 
                                             <button
                                                 onClick={() => onConfirmDelete(item._id)}
                                                 className="bg-red-300 hover:bg-red-400 text-gray-800 py-2 px-4 rounded-r">
