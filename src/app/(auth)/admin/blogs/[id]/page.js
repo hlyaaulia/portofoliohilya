@@ -66,11 +66,11 @@ export default function EditBlogs() {
 
     const onSubmitData = async () => {
         try {
-            if (editorRef.current) {
+            // if (editorRef.current) {
                 const body = { ...data };
-                body.content = editorRef.current.getContent();
+                // body.content = editorRef.current.getContent();
 
-                let res = await fetch(`/api/blogs/${data._id}`, {
+                let res = await fetch(`/api/blogs/${params.id}`, {
                     method: 'PUT',
                     // headers: {
                     //     'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ export default function EditBlogs() {
                 setModal(true);
                 setModalTitle('Info');
                 setModalMessage(resData.message);
-            }
+            // }
         } catch (err) {
             console.error("ERR", err.message);
             setModal(true);
@@ -138,26 +138,16 @@ export default function EditBlogs() {
 
         </div>
 
-                <Editor
-                    id='content'
-                    apiKey='9cwimxs87anry0u2avnf1wswmlg849552261vhxbl2qb8qkw'
-                    onInit={(_evt, editor) => editorRef.current = editor}
-                    initialValue={data.content}
-                    init={{
-                        height: 500,
-                        menubar: false,
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | ' +
-                            'bold italic forecolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                    }}
+        <div className="w-full my-2">
+                <label>Content</label>
+                <textarea
+                  name="content"
+                  className="border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full"
+                  value={data.content}
+                  onChange={inputHandler}
+                  placeholder="Enter blog content"
                 />
+            </div>
 
                 <button className="btn-primary" onClick={onSubmitData}>
                     <span className="relative text-sm font-semibold text-white">
